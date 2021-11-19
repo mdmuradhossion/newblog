@@ -75,9 +75,10 @@ class FileUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $gallery = Gallery::orderBy('id', 'DESC')->get();
+        return view('admin/gallery/all_image',compact('gallery'));
     }
 
     /**
@@ -86,9 +87,19 @@ class FileUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function choose(Request $request)
     {
-        //
+        $data = array();
+        $gallery = array();
+        foreach ($request->img as $item) {
+            $gallery = Gallery::findOrFail($item);
+
+        }
+
+        $data['image'] ='<img src="'.asset($gallery->path.''.$gallery->image).'" class="galllery-img2" >';
+        $data['id'] = $gallery->id;
+        $data['extention'] = $gallery->image;
+        return response()->json($data);
     }
 
     /**

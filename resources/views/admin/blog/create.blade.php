@@ -102,22 +102,35 @@
 
                                     <div class="col-12">
                                         <h6>Main Image</h6>
-                                        <div class="form-group">
-                                            <input type="file" class="form-control" name="image" required>
+
+                                        <div class="row">
+                                            <div class="col-12 text-center" id="image_img"></div>
+                                            <div class="input-group col-12">
+                                                <div class="input-group-prepend">
+                                                    <a role="button" class="input-group-text" id="image"
+                                                       onclick="choseFile(this)">Browse Files</a>
+                                                </div>
+                                                <input type="text" id="image_url" class="form-control">
+                                                <input type="hidden" name="image" id="image_val">
+
+                                            </div>
                                         </div>
                                         <hr>
                                     </div>
 
                                     <div class="col-12">
                                         <h6>Thumbnail Image</h6>
+                                        <div class="row">
+                                            <div class="col-12 text-center" id="thum_image_img"></div>
+                                            <div class="input-group col-12">
+                                                <div class="input-group-prepend">
+                                                    <a role="button" class="input-group-text" id="thum_image"
+                                                       onclick="choseFile(this)">Browse Files</a>
+                                                </div>
+                                                <input type="text" id="thum_image_url" class="form-control">
+                                                <input type="hidden" name="thum_image" id="thum_image_val">
 
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <a role="button" href="javascript:void(0);" class="input-group-text" id="basic-addon3" data-toggle="modal" data-target=".bd-example-modal-lg">Browse Files</a>
                                             </div>
-                                            <input type="text" name="thum_image" class="form-control" id="basic-url"
-                                                   aria-describedby="basic-addon3">
-
                                         </div>
                                         <hr>
                                     </div>

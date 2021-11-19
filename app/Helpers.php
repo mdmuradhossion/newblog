@@ -77,11 +77,16 @@ if(!function_exists('gallery_image')){
 
         $view = '';
         foreach ($data as $key => $val) {
-
+            $view .='<div class="col-3 p-3" >
+                        <div class="img-gl" >
+                            <img src="'.asset($val->path.''.$val->image).'" class="gal-img" >
+                        </div>
+                    </div>';
         }
 
-        return $opt;
+        return $data;
     }
 }
+
 
 

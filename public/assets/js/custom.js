@@ -202,7 +202,15 @@ $(document).on('submit', '#galleryFile', function (e) {
             if (response.success) {
                 $('div.flash-message').html(success(response.success));
                 $('#galleryFile')[0].reset();
-                $("#reload").load(location.href + " #reload");           }
+                $("#reload").load(location.href + " #reload");
+                $.ajax({
+                    method: "GET",
+                    url: 'gallery-image',
+                    success: function (response) {
+                        $('#galleryImageShow').html(response);
+                    }
+                });
+            }
             if (response.error) {
                 $('div.flash-message').html(error(response.error));
             }
@@ -210,5 +218,49 @@ $(document).on('submit', '#galleryFile', function (e) {
         }
     });
 });
+
+function choseFile(elem){
+    var id = $(elem).attr("id");
+    var ext = id+'_url';
+    var val = id+'_val';
+    var image = id+'_img';
+
+    $('.bd-example-modal-lg').modal('show');
+
+    $.ajax({
+        method: "GET",
+        url: 'gallery-image',
+        beforeSend: function () {
+            $('#messUplode').html('<i class="fa fa-spinner fa-spin"></i>');
+        },
+        success: function (response) {
+            $('#galleryImageShow').html(response);
+            $('#messUplode').html('');
+        }
+    });
+
+    $('#galleryImageForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).prop('action'),
+            data: $(this).serialize(),
+            beforeSend: function () {
+                $('#subBtn').html('<i class="fa fa-spinner fa-spin"></i>');
+            },
+            success: function( response ) {
+                $('#'+ext).val(response.extention);
+                $('#'+val).val(response.id);
+                $('#'+image).html(response.image);
+                $("#galleryImageForm")[0].reset();
+                ext = '';
+                val = '';
+                image ='';
+                $('.bd-example-modal-lg').modal('hide');
+                $('#subBtn').html('Add');
+            }
+        });
+    });
+}
 
 

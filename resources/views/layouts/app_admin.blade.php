@@ -283,7 +283,7 @@
             <div class="modal-content">
                 <div class="modal-header">
 
-                    <h5 class="modal-title">Gallery <b id="messUplode" ></b></h5>
+                    <h5 class="modal-title">Gallery <b id="messUplode"></b></h5>
 
                 </div>
                 <div class="modal-body">
@@ -300,34 +300,25 @@
 
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="gallery" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                <div class="col-3 p-3" >
-                                    <div class="img-gl" >
-                                    <img src="{{ asset('assets/uploads/gallery/61854b4c7cfbd.jpg') }}" class="gal-img" >
-                                    </div>
-                                </div>
-                                <div class="col-3 p-3" >
-                                    <div class="img-gl" >
-                                        <img src="{{ asset('assets/uploads/gallery/61854ab449b68.jpg') }}" class="gal-img" >
-                                    </div>
-                                </div>
-                                <div class="col-3 p-3" >
-                                    <div class="img-gl" >
-                                        <img src="{{ asset('assets/uploads/gallery/61854b4c7cfbd.jpg') }}" class="gal-img" >
-                                    </div>
-                                </div>
-                            </div>
+                            <form action="{{route('choose.gallery.image')}}" method="POST" id="galleryImageForm">
+                                @csrf
+                                <div class="row" id="galleryImageShow" style="padding: 10px;"></div>
+
+                                <button type="submit" class="btn btn-primary" id="subBtn" style="float: right;"> Add</button>
+                            </form>
                         </div>
 
                         <div class="tab-pane fade" id="uplode" role="tabpanel" aria-labelledby="profile-tab">
-                            <form method="POST" id="galleryFile" action="{{route('gallery.action')}}" enctype="multipart/form-data">
+                            <form method="POST" id="galleryFile" action="{{route('gallery.action')}}"
+                                  enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-12" >
+                                    <div class="col-12">
                                         <div class="input-field">
                                             <label class="active">Images</label>
                                             <div class="input-images-1" style="padding-top: .5rem;"></div>
-                                        </div><br>
+                                        </div>
+                                        <br>
 
                                         <button type="submit" class="btn btn-primary" style="float: right;">
                                             Upload
@@ -340,10 +331,10 @@
 
 
                 </div>
-{{--                <div class="modal-footer">--}}
-{{--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-{{--                    <button type="button" class="btn btn-primary">Add File</button>--}}
-{{--                </div>--}}
+                {{--                <div class="modal-footer">--}}
+                {{--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
+                {{--                    <button type="button" class="btn btn-primary">Add File</button>--}}
+                {{--                </div>--}}
             </div>
         </div>
     </div>

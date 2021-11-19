@@ -35,3 +35,5 @@ Route::get('admin/blog-create', [App\Http\Controllers\BlogController::class, 'cr
 
 
 Route::post('admin/gallery-action', [App\Http\Controllers\FileUploadController::class, 'store'])->name('gallery.action');
+Route::get('admin/gallery-image', [App\Http\Controllers\FileUploadController::class, 'show'])->name('gallery.image');
+Route::post('admin/choose/gallery-image', [App\Http\Controllers\FileUploadController::class, 'choose'])->name('choose.gallery.image');
