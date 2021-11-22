@@ -37,31 +37,34 @@
                         <div class="card-body">
 
                             <div class="table-responsive">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" id="reload">
                                     <thead>
                                     <tr>
                                         <th style="min-width: 300px">Article details</th>
-                                        <th style="width:110px">Category</th>
+                                        <th style="width:110px;">Category</th>
                                         <th style="min-width:110px">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach($blog as $val)
 
                                     <tr>
                                         <td>
-                                            <div class="blog_list"><img class="img-fluid d-none d-lg-block" alt="image" src="https://via.placeholder.com/180x120" /></div>
-                                            <h4> Vivamus condimentum rutrum odio</h4>
-                                            <p>Posted by <b>Administrator</b> at Nov 29 2018</p>
-                                            <p>Nulla cursus maximus lacus at efficitur. In lobortis ante vitae nulla semper, in volutpat libero aliquet. Morbi sit amet nibh vitae metus interdum finibus sed nec nisl. Ut quam dolor, bibendum id maximus ut, suscipit consectetur sem.</p>
+                                            <div class="blog_list"><img class="img-fluid d-none d-lg-block" alt="image" src="@php echo id_by_image($val->thum_image);@endphp" /></div>
+                                            <h4>{{$val->title}}</h4>
+                                            <p>Posted by <b>{{get_data_by_id('name','users','id',$val->user_id)}}</b> at {{date_view($val->created_at)}}</p>
+                                            @php echo substr($val->description , 0,190) @endphp..
                                         </td>
 
-                                        <td>Blog</td>
+                                        <td style="text-transform: capitalize;">@php echo get_data_by_id('name','categories','id',$val->category_id); @endphp</td>
 
                                         <td>
-                                            <a href="#" class="btn btn-primary btn-sm btn-block"><i class="far fa-edit"></i> Edit</a>
-                                            <a href="#" class="btn btn-danger btn-sm btn-block mt-2"><i class="fas fa-trash"></i> Delete</a>
+                                            <a href="{{route('blog.edit',$val->id)}}" class="btn btn-primary btn-sm btn-block"><i class="far fa-edit"></i> Edit</a>
+                                            <a href="{{route('blog.delete',$val->id)}}"  class="btn btn-danger btn-sm btn-block mt-2" id="delete"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
+                                    @endforeach
+
                                     </tbody>
                                 </table>
                             </div>

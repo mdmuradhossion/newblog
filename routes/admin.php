@@ -32,8 +32,12 @@ Route::post('admin/category/create-action', [App\Http\Controllers\CategoryContro
 //all blog
 Route::get('admin/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.list');
 Route::get('admin/blog-create', [App\Http\Controllers\BlogController::class, 'create'])->name('blog.add');
+Route::post('admin/blog/create-action', [App\Http\Controllers\BlogController::class, 'store'])->name('blog.action');
+Route::get('admin/blog-edit/{id}', [App\Http\Controllers\BlogController::class, 'edit'])->name('blog.edit');
+Route::post('admin/blog/update-action', [App\Http\Controllers\BlogController::class, 'update'])->name('blog.update.action');
+Route::get('admin/blog-delete/{id}', [App\Http\Controllers\BlogController::class, 'destroy'])->name('blog.delete');
 
-
+//All gallery
 Route::post('admin/gallery-action', [App\Http\Controllers\FileUploadController::class, 'store'])->name('gallery.action');
 Route::get('admin/gallery-image', [App\Http\Controllers\FileUploadController::class, 'show'])->name('gallery.image');
 Route::post('admin/choose/gallery-image', [App\Http\Controllers\FileUploadController::class, 'choose'])->name('choose.gallery.image');

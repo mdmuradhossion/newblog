@@ -28,9 +28,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/toastr/toastr.min.css')}}">
     <!-- END CSS for this page -->
-    <link href="{{ asset('assets/css/editor.css')}}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/richtext.min.css')}}" type="text/css" rel="stylesheet"/>
 
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/up/image-uploader.min.css')}}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('assets/drag/dropzone.min.css')}}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('assets/drag/bootstrap-tagsinput.css')}}">
 
 </head>
 
@@ -290,7 +291,7 @@
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#gallery" role="tab"
-                               aria-controls="home" aria-selected="true">Gallery</a>
+                               aria-controls="home" aria-selected="true" onclick="lodeImage()">Gallery</a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#uplode" role="tab"
@@ -304,26 +305,17 @@
                                 @csrf
                                 <div class="row" id="galleryImageShow" style="padding: 10px;"></div>
 
-                                <button type="submit" class="btn btn-primary" id="subBtn" style="float: right;"> Add</button>
+                                <button type="submit" class="btn btn-primary" id="subBtn" style="float: right;"> Add
+                                </button>
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="uplode" role="tabpanel" aria-labelledby="profile-tab">
-                            <form method="POST" id="galleryFile" action="{{route('gallery.action')}}"
-                                  enctype="multipart/form-data">
+                            <form action="{{route('gallery.action')}}" class="dropzone" id="file-upload" enctype="multipart/form-data">
                                 @csrf
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="input-field">
-                                            <label class="active">Images</label>
-                                            <div class="input-images-1" style="padding-top: .5rem;"></div>
-                                        </div>
-                                        <br>
-
-                                        <button type="submit" class="btn btn-primary" style="float: right;">
-                                            Upload
-                                        </button>
-                                    </div>
+                                <div class="dz-message">
+                                    <i class="fa-4x mr-2 fas fa-cloud-download-alt"></i><br>
+                                    Drag and Drop Single/Multiple Files Here<br>
                                 </div>
                             </form>
                         </div>
@@ -331,10 +323,6 @@
 
 
                 </div>
-                {{--                <div class="modal-footer">--}}
-                {{--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-                {{--                    <button type="button" class="btn btn-primary">Add File</button>--}}
-                {{--                </div>--}}
             </div>
         </div>
     </div>
@@ -361,7 +349,7 @@
 <!-- BEGIN Java Script for this page -->
 <script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
-<script src="{{ asset('assets/js/editor.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.richtext.js') }}"></script>
 <!-- Counter-Up-->
 <script src="{{ asset('assets/plugins/waypoints/lib/jquery.waypoints.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/counterup/jquery.counterup.min.js') }}"></script>
@@ -379,7 +367,9 @@
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset('assets/up/image-uploader.min.js') }}"></script>
-
+<script type="text/javascript" src="{{ asset('assets/drag/dropzone.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/drag/bootstrap-tagsinput.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
 
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 
@@ -388,6 +378,8 @@
     $(document).on('ready', function () {
         // data-tables
         $('#dataTable').DataTable({});
+
+        $('#txtEditor').richText();
 
         // counter-up
         $('.counter').counterUp({
@@ -404,6 +396,95 @@
     });
 
     $('.input-images-1').imageUploader();
+
+    function lodeImage(){
+        $.ajax({
+            method: "GET",
+            url: "{{route('gallery.image')}}",
+            success: function (response) {
+                $('#galleryImageShow').html(response);
+            }
+        });
+    }
+
+    function choseFile(elem){
+        var id = $(elem).attr("id");
+        var ext = id+'_url';
+        var val = id+'_val';
+        var image = id+'_img';
+
+        $('.bd-example-modal-lg').modal('show');
+
+        $.ajax({
+            method: "GET",
+            url: "{{route('gallery.image')}}",
+            beforeSend: function () {
+                $('#messUplode').html('<i class="fa fa-spinner fa-spin"></i>');
+            },
+            success: function (response) {
+                $('#galleryImageShow').html(response);
+                $('#messUplode').html('');
+            }
+        });
+
+        $('#galleryImageForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).prop('action'),
+                data: $(this).serialize(),
+                beforeSend: function () {
+                    $('#subBtn').html('<i class="fa fa-spinner fa-spin"></i>');
+                },
+                success: function( response ) {
+                    $('#'+ext).val(response.extention);
+                    $('#'+val).val(response.id);
+                    $('#'+image).html(response.image);
+                    $("#galleryImageForm")[0].reset();
+                    ext = '';
+                    val = '';
+                    image ='';
+                    $('.bd-example-modal-lg').modal('hide');
+                    $('#subBtn').html('Add');
+                }
+            });
+        });
+    }
+
+    $(document).on( "click", "#delete", function(event) {
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    var url = $(this).attr('href');
+                    $.ajax({
+                        method: "GET",
+                        url: url,
+                        beforeSend: function () {
+                            $('#delete').html('<i class="fa fa-spinner fa-spin"></i>');
+                        },
+                        success: function (response) {
+                            if (response.data == 1) {
+                                swal("Poof! Your imaginary file has been deleted!", {
+                                    icon: "success",
+                                });
+                                $("#reload").load(location.href + " #reload");
+                                // $('#delete').html('<i class="fas fa-trash"></i> Delete');
+                            }
+                        }
+                    });
+
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    });
 
 
 </script>

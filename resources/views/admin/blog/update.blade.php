@@ -23,10 +23,10 @@
             </div>
             <!-- end row  -->
 
-            <form id="submitForm" action="{{route('blog.action')}}" method="POST" data-parsley-validate
+            <form id="submitForm" action="{{route('blog.update.action')}}" method="POST" data-parsley-validate
                   novalidate>
                 @csrf
-                <div class="row" id="reload">
+                <div class="row" >
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="card mb-3">
                             <div class="card-header">
@@ -47,24 +47,25 @@
                                 <div class="form-group col-12">
                                     <label for="title">Title<span class="text-danger">*</span></label>
                                     <input type="text" name="title" data-parsley-trigger="change" required
-                                           placeholder="Title" class="form-control" id="title" oninput="createSlug(this.value)">
+                                           placeholder="Title" class="form-control" id="title" oninput="createSlug(this.value)" value="{{$blog->title}}">
                                 </div>
 
                                 <div class="form-group col-12">
                                     <p> Slug: <small id="slugview"></small></p>
                                     <input type="hidden" name="slug" data-parsley-trigger="change" required
                                            placeholder="Slug" class="form-control" id="slug" readonly>
+                                    <input type="hidden" name="id" value="{{$blog->id}}" required >
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                        <div class="card mb-3">
+                        <div class="card mb-3" >
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="userName">Description<span class="text-danger">*</span></label>
-                                    <textarea id="txtEditor" name="description"></textarea>
+                                    <textarea id="txtEditor" class="txtEditor" name="description">{{$blog->description}}</textarea>
                                 </div>
 
                             </div>
@@ -82,9 +83,9 @@
                                             <select class="form-control capitalize" name="category">
                                                 @foreach($category as $cat)
                                                     @php $subcategory = \App\Models\Category::where('parent_id',$cat->id)->get();  @endphp
-                                                    <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                                    <option value="{{$cat->id}}" @php if($blog->category_id == $cat->id){echo 'selected';}@endphp >{{$cat->name}}</option>
                                                     @foreach($subcategory as $subcat)
-                                                        <option value="{{$subcat->id}}">-{{$subcat->name}}</option>
+                                                        <option value="{{$subcat->id}}" @php if($blog->category_id == $subcat->id){echo 'selected';}@endphp>-{{$subcat->name}}</option>
                                                     @endforeach
                                                 @endforeach
                                             </select>
@@ -96,7 +97,7 @@
                                         <h6>Status</h6>
                                         <div class="form-group">
                                             <select class="form-control" name="status" required>
-                                                @php echo statusInOption(1); @endphp
+                                                @php echo statusInOption($blog->status); @endphp
                                             </select>
                                         </div>
                                         <hr>
@@ -106,7 +107,9 @@
                                         <h6>Main Image</h6>
 
                                         <div class="row">
-                                            <div class="col-12 text-center" id="image_img"></div>
+                                            <div class="col-12 text-center" id="image_img">
+                                                <img src="{{id_by_image($blog->image)}}" alt=""  class="galllery-img2">
+                                            </div>
                                             <div class="input-group col-12">
                                                 <div class="input-group-prepend">
                                                     <a role="button" class="input-group-text" id="image"
@@ -123,7 +126,9 @@
                                     <div class="col-12">
                                         <h6>Thumbnail Image</h6>
                                         <div class="row">
-                                            <div class="col-12 text-center" id="thum_image_img"></div>
+                                            <div class="col-12 text-center" id="thum_image_img">
+                                                <img src="{{id_by_image($blog->thum_image)}}" alt=""  class="galllery-img2">
+                                            </div>
                                             <div class="input-group col-12">
                                                 <div class="input-group-prepend">
                                                     <a role="button" class="input-group-text" id="thum_image"
@@ -140,7 +145,8 @@
                                     <div class="col-12">
                                         <h6>TAG</h6>
                                         <div class="form-group">
-                                            <input class="form-control" type="text" name="tag"  data-role="tagsinput" value="" placeholder="tag" >
+                                            @php $tag = json_decode($blog->tag); @endphp
+                                            <input class="form-control" type="text" name="tag"  data-role="tagsinput" value="{{$tag}}" >
                                         </div>
                                         <hr>
                                     </div>
@@ -156,7 +162,7 @@
                             <div class="card-body">
                                 <div class="form-group text-right m-b-0">
                                     <button class="btn btn-primary" type="submit" id="btnSubmit">
-                                        Submit
+                                        Update
                                     </button>
 
                                 </div>

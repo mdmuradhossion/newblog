@@ -34,39 +34,22 @@ class FileUploadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'images.*' => 'required|mimes:jpg,jpeg,png,bmp|max:20000',
-            ],[
-                'images.*.required' => 'Please upload an image',
-                'images.*.mimes' => 'Only jpeg,png and bmp images are allowed',
-                'images.*.max' => 'Sorry! Maximum allowed size for an image is 20MB',
-            ]
-        );
+    public function store(Request $request){
+        $image = $request->file('file');
 
-        if ($validator->fails()) {
-            return response()->json([ 'error' => $validator->errors()->all()]);
-        }
 
-        $data = [];
-        foreach($request->file('images') as $file)
-        {
-            $path = '/assets/uploads/gallery/';
-            $name = uniqid().'.'.$file->extension();
-            $file->move(public_path().'/assets/uploads/gallery', $name);
-            $data[]= $name;
-        }
+        $name = uniqid().'.'.$image->extension();
+        $path = '/assets/uploads/gallery/';
+        $name = uniqid().'.'.$image->extension();
+        $image->move(public_path().'/assets/uploads/gallery', $name);
 
-        foreach ($data as $datum) {
-            $gallery = new Gallery ;
-            $gallery->image = $datum;
-            $gallery->path = $path;
-            $gallery->save();
-        }
+        $gallery = new Gallery ;
+        $gallery->image = $name;
+        $gallery->path = $path;
+        $gallery->save();
 
         $msg = 'Image uplode Successfully.';
-        return response()->json([ 'success' => $msg ]);
+        return response()->json(['success'=>$name]);
     }
 
     /**

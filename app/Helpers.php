@@ -70,23 +70,26 @@ if(!function_exists('file_assets')){
     }
 }
 
-if(!function_exists('gallery_image')){
-    function gallery_image(){
-
-        $data = DB::table('galleries')->get();
-
-        $view = '';
-        foreach ($data as $key => $val) {
-            $view .='<div class="col-3 p-3" >
-                        <div class="img-gl" >
-                            <img src="'.asset($val->path.''.$val->image).'" class="gal-img" >
-                        </div>
-                    </div>';
+if(!function_exists('id_by_image')){
+    function id_by_image($id){
+        $view = asset('assets/uploads/no-image.jpg');
+        if (!empty($id)) {
+            $data = DB::table('galleries')->where('id', $id)->first();
+            $view = asset($data->path . '' . $data->image);
         }
 
-        return $data;
+        return $view;
     }
 }
+
+if(!function_exists('date_view')){
+    function date_view($date){
+        $time = strtotime($date);
+        $date = date('M-d-Y',$time);
+        return $date;
+    }
+}
+
 
 
 

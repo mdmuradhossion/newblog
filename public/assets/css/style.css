@@ -1668,10 +1668,6 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 .capitalize{
     text-transform: capitalize;
 }
-/*.img-gl{*/
-/*    border: 1px solid #e5e3e3;*/
-/*    text-align: center;*/
-/*}*/
 
 div#product {
     display:inline-block;
@@ -1679,7 +1675,7 @@ div#product {
     text-align:center;
     width:auto;
     margin:0 47px 0 0;
-    padding:24px 22px 20px 27px;
+    padding:10px;
     border:1px solid transparent;
 }
 
@@ -1699,7 +1695,7 @@ div#product.unselected {
 }
 
 div#product.selected {
-    border:1px solid #32a24e;
+    border:2px solid #32a24e;
     -moz-border-radius:3px;
     border-radius:3px;
 }
@@ -1708,10 +1704,25 @@ div#product.selected {
 .gal-img{
     min-height: 130px;
     max-height: 130px;
+    max-width: 100%;
 }
 .galllery-img2{
-    width: 100px;
-    height: 100px;
+    /*width: 100px;*/
+    /*height: 100px;*/
+    max-width: 285px;
+    max-height: 230px;
     padding: 10px;
+}
+
+.dropzone {
+    background: #e3e6ff;
+    border-radius: 13px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px dotted #1833FF;
+    margin-top: 50px;
+}
+.bootstrap-tagsinput .tag{
+    margin-top: 5px;
 }
 
