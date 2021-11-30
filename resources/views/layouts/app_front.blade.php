@@ -16,7 +16,7 @@
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container box_1620">
-                <a class="navbar-brand logo_h" href="index.html"></a>
+                <a class="navbar-brand logo_h" href="index.html">Logo</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

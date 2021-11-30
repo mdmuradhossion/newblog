@@ -42,6 +42,7 @@
                                     <tr>
                                         <th style="min-width: 300px">Article details</th>
                                         <th style="width:110px;">Category</th>
+                                        <th style="width:110px;" id="status">Status</th>
                                         <th style="min-width:110px">Actions</th>
                                     </tr>
                                     </thead>
@@ -57,7 +58,13 @@
                                         </td>
 
                                         <td style="text-transform: capitalize;">@php echo get_data_by_id('name','categories','id',$val->category_id); @endphp</td>
-
+                                        <td>
+                                            @php $che = ($val->status == '1')?'checked':''; $value = ($val->status == '1')?'0':'1'; @endphp
+                                            <label class="switch">
+                                                <input type="checkbox" {{$che}} value="{{$value}}" onclick="changeStatus(this.value,'{{$val->id}}','{{route('blog.status.change')}}')" >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </td>
                                         <td>
                                             <a href="{{route('blog.edit',$val->id)}}" class="btn btn-primary btn-sm btn-block"><i class="far fa-edit"></i> Edit</a>
                                             <a href="{{route('blog.delete',$val->id)}}"  class="btn btn-danger btn-sm btn-block mt-2" id="delete"><i class="fas fa-trash"></i> Delete</a>

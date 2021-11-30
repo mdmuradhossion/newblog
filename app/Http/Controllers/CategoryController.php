@@ -74,7 +74,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin/category/edit',compact('category'));
     }
 
     /**
@@ -84,9 +85,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $category = Category::findOrFail($request->id);
+        $category->name = $request->name;
+        $category->parent_id = $request->parent_id;
+        $category->icon = $request->icon;
+        $category->update();
+
+        $msg = 'New Data Update Successfully.';
+        return response()->json([ 'success' => $msg ]);
     }
 
     /**
@@ -97,6 +105,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return response()->json([ 'data' => 1 ]);
     }
 }

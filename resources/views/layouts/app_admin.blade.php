@@ -363,13 +363,15 @@
 <script src="{{ asset('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
 
 
-<script src="{{ asset('assets/js/admin.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset('assets/up/image-uploader.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/drag/dropzone.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/drag/bootstrap-tagsinput.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+{{--<script src="{{ asset('assets/plugins/sweetalert/sweetalert.min.js') }}"></script>--}}
+
+<script src="{{ asset('assets/js/sweetalert2@11.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 
@@ -378,6 +380,7 @@
     $(document).on('ready', function () {
         // data-tables
         $('#dataTable').DataTable({});
+        $("#form").validate();
 
         $('#txtEditor').richText();
 
@@ -387,6 +390,7 @@
             time: 600
         });
 
+
         // select2
         $('.select2').select2();
 
@@ -394,6 +398,8 @@
             $("#toast-container").fadeOut();
         }, 2000);
     });
+
+
 
     $('.input-images-1').imageUploader();
 
@@ -453,38 +459,95 @@
 
     $(document).on( "click", "#delete", function(event) {
         event.preventDefault();
-        swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    var url = $(this).attr('href');
-                    $.ajax({
-                        method: "GET",
-                        url: url,
-                        beforeSend: function () {
-                            $('#delete').html('<i class="fa fa-spinner fa-spin"></i>');
-                        },
-                        success: function (response) {
-                            if (response.data == 1) {
-                                swal("Poof! Your imaginary file has been deleted!", {
-                                    icon: "success",
-                                });
-                                $("#reload").load(location.href + " #reload");
-                                // $('#delete').html('<i class="fas fa-trash"></i> Delete');
-                            }
-                        }
-                    });
 
-                } else {
-                    swal("Your imaginary file is safe!");
-                }
-            });
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                var url = $(this).attr('href');
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    beforeSend: function () {
+                        $('#delete').html('<i class="fa fa-spinner fa-spin"></i>');
+                    },
+                    success: function (response) {
+                        if (response.data == 1) {
+                            swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            $("#reload").load(location.href + " #reload");
+                            $("#dataTable").load(location.href + " #dataTable");
+                        }
+                    }
+                });
+
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        })
+
+
     });
+
+    function changeStatus(val,id,url){
+        $.ajax({
+            method: "GET",
+            url: url,
+            data: {val:val,id:id,url:url },
+            beforeSend: function () {
+                $('#status').html('<i class="fa fa-spinner fa-spin"></i>');
+            },
+            success: function (response) {
+                if (response.success) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.success
+                    })
+
+                    $("#reload").load(location.href + " #reload");
+                    $("#dataTable").load(location.href + " #dataTable");
+                }
+            }
+        });
+    }
 
 
 </script>

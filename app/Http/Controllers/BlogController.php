@@ -119,6 +119,21 @@ class BlogController extends Controller
 
     }
 
+    public function status_update(Request $request)
+    {
+
+        $blog = Blog::findOrFail($request->id);
+        $blog->status = $request->val;
+        $blog->update();
+        if ($request->val == 1) {
+            $msg = 'Successfully active status';
+        }else{
+            $msg = 'Successfully deactivate status';
+        }
+        return response()->json([ 'success' => $msg ]);
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

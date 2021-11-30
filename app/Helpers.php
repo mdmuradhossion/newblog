@@ -12,11 +12,13 @@ if(!function_exists('flash')){
 }
 
 if(!function_exists('getParentCategoryInOption')){
-    function getParentCategoryInOption(){
+    function getParentCategoryInOption($sel=0){
+
         $category = \App\Models\Category::where('parent_id',NULL)->get();
         $option = '<option value="">Please Select</option>';
         foreach ($category as $item) {
-            $option .= '<option value="'.$item->id.'">'.$item->name.'</option>';
+            $s = ($item->id == $sel)?'selected':'';
+            $option .= '<option value="'.$item->id.'" '.$s.'>'.$item->name.'</option>';
         }
         return $option;
     }

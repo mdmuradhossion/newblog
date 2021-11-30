@@ -2,15 +2,15 @@ var resizefunc = [];
 
 
 $(document).on('ready',function() {
-    $(function() {  
+    $(function() {
     $(".nicescroll").niceScroll({cursorcolor:"#858586"});
-	});	
+	});
 });
 
 
 !function($) {
     "use strict";
-	
+
     var Sidemenu = function() {
         this.$body = $("body"),
         this.$openLeftBtn = $(".open-left"),
@@ -88,7 +88,7 @@ $(document).on('ready',function() {
  function($) {
     "use strict";
 
-    var App = function() {        
+    var App = function() {
         this.pageScrollElement = "html, body",
         this.$body = $("body")
     };
@@ -162,7 +162,7 @@ var changeptype = function(){
       }
 
   }
-  
+
 }
 
 

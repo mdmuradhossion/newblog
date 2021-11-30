@@ -34,7 +34,7 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="dataTable" class="table table-bordered table-hover display" style="width:100%">
+                                <table id="dataTable" class="table table-bordered table-hover display" style="width:100%;text-transform: capitalize;">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -52,8 +52,8 @@
                                             <td>{{get_data_by_id('name','categories','id',$item->parent_id)}}</td>
                                             <td>{{$item->icon}}</td>
                                             <td>
-                                                <a class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                                                <a class="btn btn-danger"><i class="fa fa-times"></i></a>
+                                                <a href="{{route('category.edit',$item->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                <a href="{{route('category.delete',$item->id)}}" class="btn btn-danger" id="delete"><i class="fa fa-times"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
