@@ -92,6 +92,65 @@ if(!function_exists('date_view')){
     }
 }
 
+if(!function_exists('home_logo')){
+    function home_logo(){
+        $page = DB::table('pages')->where('slug', 'home')->first();
+        $date = id_by_image($page->logo);
+        return $date;
+    }
+}
+
+if(!function_exists('page_data')){
+    function page_data($slug){
+        $page = DB::table('pages')->where('slug', $slug)->first();
+        return $page;
+    }
+}
+
+if(!function_exists('main_menu')){
+    function main_menu(){
+        $menu = DB::table('menues')->get();
+        $view = '';
+        foreach ($menu as $key => $val) {
+            $url = (!empty($val->url))?$val->url:url('');
+            $icon = (!empty($val->icon))?$val->icon:'';
+            $act = ($key == 0)?'active':'';
+            $view .= '<li class="nav-item '.$act.'"><a class="nav-link" href="'.$url.'">'.$icon.' '.$val->menu.'</a></li>';
+        }
+
+        return $view;
+    }
+}
+
+if(!function_exists('get_posts_by_categoryId')){
+    function get_posts_by_categoryId($id){
+        $posts = DB::table('blogs')->where('category_id', $id)->get();
+        return $posts;
+    }
+}
+
+if(!function_exists('get_posts')){
+    function get_posts(){
+        $posts = DB::table('blogs')->get();
+        return $posts;
+    }
+}
+
+if(!function_exists('main_category')){
+    function main_category(){
+        $category = DB::table('categories')->where('parent_id',NULL)->get();
+        return $category;
+    }
+}
+
+if(!function_exists('sub_category_by_id')){
+    function sub_category_by_id($id){
+        $category = DB::table('categories')->where('parent_id',$id)->get();
+        return $category;
+    }
+}
+
+
 
 
 

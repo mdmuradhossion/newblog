@@ -69,6 +69,8 @@ $(document).on('submit', '#submitForm', function (e) {
 
                 $('#submitForm')[0].reset();
                 $("#reload").load(location.href + " #reload");
+                $("#reload2").load(location.href + " #reload2");
+                $("#reloaddiv").load(location.href + " #reloaddiv");
 
                 if ( response.url !== undefined ){
                     window.location.replace(response.url);

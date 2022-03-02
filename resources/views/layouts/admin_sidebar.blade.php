@@ -14,6 +14,14 @@
                 </li>
 
                 <li class="submenu">
+                    <a href="{{route('blog.list')}}">
+
+                        <i class="fas fa-file-alt"></i>
+                        <span> Post </span>
+                    </a>
+                </li>
+
+                <li class="submenu">
                     <a id="tables" href="#">
                         <i class="fas fa-file-alt"></i>
                         <span> Blog </span>

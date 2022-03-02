@@ -68,8 +68,10 @@
                                                 <a href="{{route('edit.page',$val->slug)}}" class="btn btn-primary btn-sm btn-block"><i class="far fa-edit"></i> Page</a>
                                                 <a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" onclick="updateMenu('{{route('menu.edit',$val->id)}}')" id="btnupdate"><i
                                                         class="far fa-edit"></i> Menu</a>
-                                                <a href="" class="btn btn-danger btn-sm btn-block mt-2" id="delete"><i
+                                                @if($val->slug != 'home')
+                                                <a href="{{route('menu.delete',$val->slug)}}" class="btn btn-danger btn-sm btn-block mt-2" id="delete"><i
                                                         class="fas fa-trash"></i> Delete</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -138,10 +140,10 @@
                                                     <input type="text" name="name" required placeholder="Title" id="name" class="form-control">
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label for="title">Slug<span class="text-danger">*</span></label>
-                                                    <input type="text" name="slug" id="slug" required placeholder="slug" class="form-control">
-                                                </div>
+{{--                                                <div class="form-group">--}}
+{{--                                                    <label for="title">Slug<span class="text-danger">*</span></label>--}}
+{{--                                                    <input type="text" name="slug" id="slug" required placeholder="slug" class="form-control">--}}
+{{--                                                </div>--}}
 
                                                 <div class="form-group">
                                                     <label for="title">Url<span class="text-danger">*</span></label>

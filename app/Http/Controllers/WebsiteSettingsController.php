@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Menue;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -11,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class WebsiteSettingsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,6 +43,10 @@ class WebsiteSettingsController extends Controller
         $menu->icon = $request->icon;
         $menu->slug = $request->slug;
         $menu->save();
+
+        $page = new Page();
+        $page->slug = $request->slug;
+        $page->save();
 
         //$url = route('blog.list');
         $msg = 'New Data Added Successfully.';
@@ -80,12 +89,33 @@ class WebsiteSettingsController extends Controller
     }
 
     public function page_edit($slug){
+        $page = Page::where('slug',$slug)->first();
         if ($slug == 'home'){
-            return view('admin/websiteSettings/home');
+            return view('admin/websiteSettings/home',compact('slug','page'));
         }else{
             $title = $slug;
             return view('admin/websiteSettings/page',compact('title'));
         }
+    }
+
+    public function web_logo_update(Request $request){
+        $page = Page::findOrFail($request->id);
+        $page->logo = $request->logo;
+        $page->update();
+
+        $msg = 'Successfully update logo';
+        return response()->json([ 'success' => $msg ]);
+    }
+
+    public function web_slider_update(Request $request){
+        $page = Page::findOrFail($request->id);
+        $page->slider_1 = $request->slider_1;
+        $page->title = $request->title;
+        $page->subtitle = $request->sub_title;
+        $page->update();
+
+        $msg = 'Successfully update logo';
+        return response()->json([ 'success' => $msg ]);
     }
 
     /**
@@ -94,10 +124,13 @@ class WebsiteSettingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function menu_delete($slug)
     {
-        $blog = Blog::findOrFail($id);
-        $blog->delete();
+        $menu = Menue::where('slug',$slug)->first();
+        $menu->delete();
+
+        $page = Page::where('slug',$slug)->first();
+        $page->delete();
 
         return response()->json([ 'data' => 1 ]);
     }

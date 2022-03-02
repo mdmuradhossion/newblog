@@ -59,3 +59,6 @@ Route::get('admin/menu/menu-edit/{id}', [App\Http\Controllers\WebsiteSettingsCon
 Route::post('admin/menu-update', [App\Http\Controllers\WebsiteSettingsController::class, 'menu_update'])->name('menu.update.action');
 
 Route::get('admin/edit-page/{slug}', [App\Http\Controllers\WebsiteSettingsController::class, 'page_edit'])->name('edit.page');
+Route::get('admin/menu-delete/{slug}', [App\Http\Controllers\WebsiteSettingsController::class, 'menu_delete'])->name('menu.delete');
+Route::post('admin/web-logo-update', [App\Http\Controllers\WebsiteSettingsController::class, 'web_logo_update'])->name('web.logo.update');
+Route::post('admin/web-slider-update', [App\Http\Controllers\WebsiteSettingsController::class, 'web_slider_update'])->name('web.slider.update');

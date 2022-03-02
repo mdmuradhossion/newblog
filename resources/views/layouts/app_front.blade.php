@@ -10,13 +10,14 @@
 
     <link rel="stylesheet" href="{{ asset('front/css/theme.default.min.css_owl-carousel___owl.carousel.min.css_mcc.drkmi7mkxc.css.pagespeed.cf.ustjvpu8k2_bfegwqoywty4uik2mh0s6f.css') }}"/>
     <link rel="stylesheet" href="{{ asset('front/theme/sensive/css/a.style.css.pagespeed.cf.ajgzvhjfct.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/theme/sensive/css/custom.css') }}">
 </head>
 <body>
 <header class="header_area">
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container box_1620">
-                <a class="navbar-brand logo_h" href="index.html">Logo</a>
+                <a class="navbar-brand logo_h" href="{{url('')}}"> <img src="{{home_logo()}}" alt="logo" class="home-logo"> </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -26,18 +27,15 @@
                 </button>
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav justify-content-center">
-                        <li class="nav-item active"><a class="nav-link" href="{{url('')}}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{url('')}}">Archive</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{url('')}}">Category</a>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="{{url('')}}">Blog
-                                        Details</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="{{url('')}}">Contact</a></li>
+                         @php echo main_menu() @endphp
+{{--                        <li class="nav-item submenu dropdown">--}}
+{{--                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"--}}
+{{--                               aria-haspopup="true" aria-expanded="false">Pages</a>--}}
+{{--                            <ul class="dropdown-menu">--}}
+{{--                                <li class="nav-item"><a class="nav-link" href="{{url('')}}">Blog--}}
+{{--                                        Details</a></li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
                     </ul>
                     <ul class="nav navbar-nav navbar-right navbar-social">
                         <li><a href="#"><i class="ti-facebook"></i></a></li>
